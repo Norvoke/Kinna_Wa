@@ -21,6 +21,9 @@
             android:name=".Stage2Activity"
             android:exported="false" />
         <activity
+            android:name=".Stage1aActivity"
+            android:exported="false" />
+        <activity
             android:name=".Stage1Activity"
             android:exported="false" />
         <activity

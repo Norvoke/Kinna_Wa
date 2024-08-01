@@ -57,7 +57,12 @@ fun MainScreen(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
-                text = "Kinna Wa / \uD803\uDD11\uD803\uDD1E\uD803\uDD15\uD803\uDD27\uD803\uDD1D \uD803\uDD16\uD803\uDD1D",
+                text = "Kinna Wa Learn",
+                style = MaterialTheme.typography.headlineLarge,
+                modifier = Modifier.padding(bottom = 1.dp)
+            )
+            Text(
+                text = "\uD803\uDD11\uD803\uDD1E\uD803\uDD15\uD803\uDD27\uD803\uDD1D \uD803\uDD16\uD803\uDD1D \uD803\uDD10\uD803\uDD1E\uD803\uDD25\uD803\uDD11\uD803\uDD21",
                 style = MaterialTheme.typography.headlineLarge,
                 modifier = Modifier.padding(bottom = 24.dp)
             )
@@ -69,7 +74,7 @@ fun MainScreen(
             ) {
                 Text(
                     style = MaterialTheme.typography.titleLarge,
-                    text = "Learn the Letters"
+                    text = "Alphabet / \uD803\uDD13\uD803\uDD20\uD803\uDD11\uD803\uDD24\uD803\uDD1D"
                 )
             }
             Button(
@@ -80,7 +85,7 @@ fun MainScreen(
             ) {
                 Text(
                     style = MaterialTheme.typography.titleLarge,
-                    text = "Simple Words"
+                    text = "Placeholder"
                 )
             }
             Button(
@@ -91,7 +96,7 @@ fun MainScreen(
             ) {
                 Text(
                     style = MaterialTheme.typography.titleLarge,
-                    text = "Forming Sentences"
+                    text = "Placeholder"
                 )
             }
             Button(
@@ -102,7 +107,7 @@ fun MainScreen(
             ) {
                 Text(
                     style = MaterialTheme.typography.titleLarge,
-                    text = "Reading Practice"
+                    text = "Placeholder"
                 )
             }
             Button(
@@ -113,7 +118,7 @@ fun MainScreen(
             ) {
                 Text(
                     style = MaterialTheme.typography.titleLarge,
-                    text = "Complex Sentences"
+                    text = "Placeholder"
                 )
             }
         }
