@@ -21,11 +21,11 @@ import com.example.kinnawa.ui.theme.KinnaWaTheme
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.runtime.CompositionLocalProvider
 import android.content.Context
-import android.content.Intent
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import java.util.Locale
 
-
+// Main activity for Stage 1: Learning the alphabet
 class Stage1Activity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,9 +39,12 @@ class Stage1Activity : ComponentActivity() {
     }
 }
 
-
+// Composable function for the main screen of learning the alphabet
 @Composable
 fun AlphabetLearningScreen(modifier: Modifier = Modifier, onBackClick: () -> Unit, context: Context = LocalContext.current) {
+    val configuration = LocalConfiguration.current
+    val isPortrait = configuration.orientation == android.content.res.Configuration.ORIENTATION_PORTRAIT
+
     val consonants = listOf(
         "𐴀", "𐴁", "𐴂", "𐴃", "𐴄", "𐴅", "𐴆",
         "𐴇", "𐴈", "𐴉", "𐴊", "𐴋", "𐴌", "𐴍",
@@ -58,30 +61,75 @@ fun AlphabetLearningScreen(modifier: Modifier = Modifier, onBackClick: () -> Uni
 
     var selectedLetter by remember { mutableStateOf<Pair<String, String>?>(null) }
 
+    // Layout for portrait mode
+    if (isPortrait) {
+        Column(
+            modifier = modifier.fillMaxSize().padding(16.dp),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Text(
+                text = "\uD803\uDD11\uD803\uDD1E\uD803\uDD15\uD803\uDD27\uD803\uDD1D \uD803\uDD07\uD803\uDD25\uD803\uDD21\uD803\uDD0C\uD803\uDD1F\uD803\uDD09\uD803\uDD22 / Learn Letters",
+                style = MaterialTheme.typography.headlineLarge,
+                modifier = Modifier.padding(bottom = 24.dp),
+                textAlign = TextAlign.Center
+            )
+            AlphabetSection(context, "", consonants, names, onLetterClick = { letter, name -> selectedLetter = Pair(letter, name) })
+            Spacer(modifier = Modifier.height(16.dp))
+            DisplaySection(selectedLetter)
+            NavigationButtons(onBackClick)
+        }
+    }
+    // Layout for landscape mode
+    else {
+        Row(
+            modifier = modifier.fillMaxSize().padding(1.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            Column(
+                modifier = Modifier.weight(1f).fillMaxHeight(),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Text(
+                    text = "\uD803\uDD11\uD803\uDD1E\uD803\uDD15\uD803\uDD27\uD803\uDD1D \uD803\uDD07\uD803\uDD21\uD803\uDD25\uD803\uDD0C\uD803\uDD21\uD803\uDD09\uD803\uDD22 / Learn Letters",
+                    style = MaterialTheme.typography.headlineLarge,
+                    modifier = Modifier.padding(bottom = 2.dp),
+                    textAlign = TextAlign.Center
+                )
+                DisplaySection(selectedLetter)
+                NavigationButtons(onBackClick)
+            }
+            AlphabetSection(
+                context = context,
+                title = "",
+                letters = consonants,
+                names = names,
+                onLetterClick = { letter, name -> selectedLetter = Pair(letter, name) },
+                modifier = Modifier.weight(1f).fillMaxHeight()
+            )
+        }
+    }
+}
+
+// Composable function to display the selected letter
+@Composable
+fun DisplaySection(selectedLetter: Pair<String, String>?) {
     Column(
-        modifier = modifier.fillMaxSize().padding(16.dp),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         Text(
-            text = "Stage 1: Learn the Letters",
-            style = MaterialTheme.typography.headlineLarge,
-            modifier = Modifier.padding(bottom = 24.dp),
-            textAlign = TextAlign.Center
-        )
-        AlphabetSection(context, "Consonants", consonants, names, onLetterClick = { letter, name -> selectedLetter = Pair(letter, name) })
-        Spacer(modifier = Modifier.height(16.dp))
-        // Heading for the selected letter display
-        Text(
-            text = "Selected Letter:",
+            text = "\uD803\uDD07\uD803\uDD21\uD803\uDD25\uD803\uDD0C\uD803\uDD21\uD803\uDD09\uD803\uDD22 / Letter:",
             style = MaterialTheme.typography.headlineMedium,
             textAlign = TextAlign.Center,
             modifier = Modifier.fillMaxWidth()
         )
-        // Display the selected letter and its name or a placeholder
+
         if (selectedLetter != null) {
             Text(
-                text = "${selectedLetter!!.first} - ${selectedLetter!!.second}",
+                text = "${selectedLetter.first} - ${selectedLetter.second}",
                 style = MaterialTheme.typography.headlineLarge,
                 textAlign = TextAlign.Center,
                 modifier = Modifier.fillMaxWidth()
@@ -94,52 +142,54 @@ fun AlphabetLearningScreen(modifier: Modifier = Modifier, onBackClick: () -> Uni
                 modifier = Modifier.fillMaxWidth()
             )
         }
-
-        Button(
-            onClick = {
-                context.startActivity(Intent(context, Stage1aActivity::class.java))
-            },
-            modifier = Modifier
-                .height(60.dp)
-                .width(250.dp)
-                .padding(top = 16.dp)
-        ) {
-            Text(
-                style = MaterialTheme.typography.titleLarge,
-                text = "Next: Vowels"
-            )
-        }
-
-        Spacer(modifier = Modifier.height(1.dp))
-        Button(
-            onClick = onBackClick,
-            modifier = Modifier.height(60.dp).width(250.dp)
-        ) {
-            Text(
-                style = MaterialTheme.typography.titleLarge,
-                text = "Go Back"
-            )
-        }
     }
 }
 
+// Composable function for the navigation buttons
+@Composable
+fun NavigationButtons(onBackClick: () -> Unit) {
+    val configuration = LocalConfiguration.current
+    val isPortrait = configuration.orientation == android.content.res.Configuration.ORIENTATION_PORTRAIT
 
+    val buttonWidth = if (isPortrait) 250.dp else 90.dp
+    val buttonHeight = if (isPortrait) 60.dp else 60.dp
+
+    Spacer(modifier = Modifier.height(8.dp))
+
+    Button(
+        onClick = onBackClick,
+        modifier = Modifier.height(buttonHeight).width(buttonWidth)
+    ) {
+        Text(
+            style = MaterialTheme.typography.headlineLarge,
+            text = "⬅\uFE0F"
+        )
+    }
+}
+
+// Composable function to display the alphabet section with buttons for each consonant
 @Composable
 fun AlphabetSection(
-    context: Context, // Pass context to access resources
+    context: Context,
     title: String,
     letters: List<String>,
     names: List<String>,
-    onLetterClick: (String, String) -> Unit
+    onLetterClick: (String, String) -> Unit,
+    modifier: Modifier = Modifier
 ) {
+    val configuration = LocalConfiguration.current
+    val isPortrait = configuration.orientation == android.content.res.Configuration.ORIENTATION_PORTRAIT
+    val gridSize = if (isPortrait) 60.dp else 58.dp
+
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(8.dp)
+        verticalArrangement = Arrangement.spacedBy(8.dp),
+        modifier = modifier
     ) {
         Text(text = title, style = MaterialTheme.typography.titleLarge)
         CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Rtl) {
             LazyVerticalGrid(
-                columns = GridCells.Adaptive(minSize = 60.dp),
+                columns = GridCells.Adaptive(minSize = gridSize),
                 contentPadding = PaddingValues(1.dp),
                 verticalArrangement = Arrangement.spacedBy(8.dp),
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
@@ -168,6 +218,7 @@ fun AlphabetSection(
     }
 }
 
+// Function to play the sound associated with a letter
 fun playLetterSound(context: Context, fileName: String) {
     val mediaPlayer = MediaPlayer()
     try {
@@ -182,9 +233,7 @@ fun playLetterSound(context: Context, fileName: String) {
     }
 }
 
-
-
-
+// Preview function for the AlphabetLearningScreen composable
 @Preview(showBackground = true)
 @Composable
 fun AlphabetLearningScreenPreview() {

@@ -20,7 +20,7 @@ class Stage3Activity : ComponentActivity() {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     StageScreen(
                         modifier = Modifier.padding(innerPadding),
-                        text = "Stage 3: Forming Sentences \n                     TBD",
+                        text = "Stage 3: \n                     TBD",
                         onBackClick = { finish() }
                     )
                 }
@@ -31,8 +31,37 @@ class Stage3Activity : ComponentActivity() {
 
 @Preview(showBackground = true)
 @Composable
-fun Stage3ScreenPreview() {
+fun Stage2ScreenPreview() {
     KinnaWaTheme {
-        StageScreen(text = "Stage 3: Forming Sentences", onBackClick = {})
+        StageScreen(text = "Stage 3: TBD", onBackClick = {})
+    }
+}
+@Composable
+fun StageScreen(modifier: Modifier = Modifier, text: String, onBackClick: () -> Unit) {
+    Box(modifier = modifier.fillMaxSize()) {
+        Column(
+            modifier = Modifier
+                .align(Alignment.Center)
+                .padding(16.dp),
+            verticalArrangement = Arrangement.spacedBy(16.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Text(
+                text = text,
+                style = MaterialTheme.typography.headlineLarge,
+                modifier = Modifier.padding(bottom = 24.dp)
+            )
+            Button(
+                onClick = onBackClick,
+                modifier = Modifier
+                    .height(60.dp)
+                    .width(250.dp)
+            ) {
+                Text(
+                    style = MaterialTheme.typography.titleLarge,
+                    text = "Go Back"
+                )
+            }
+        }
     }
 }
