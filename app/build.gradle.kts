@@ -4,11 +4,11 @@ plugins {
 }
 
 android {
-    namespace = "com.example.kinnawa"
+    namespace = "com.norvoke.kinnawa"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.example.kinnawa"
+        applicationId = "com.norvoke.kinnawa"
         minSdk = 24
         targetSdk = 34
         versionCode = 1
